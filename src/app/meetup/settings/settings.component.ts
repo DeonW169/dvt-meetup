@@ -11,6 +11,8 @@ import { SettingsService } from '../../shared/services/settings.service';
 export class SettingsComponent implements OnInit, AfterViewInit {
   categories: any;
   loading = true;
+  categorySelected = false;
+  categoryName: string;
   displayedColumns = ['id', 'name', 'shortname'];
   dataSource = new MatTableDataSource<any>();
 
@@ -44,5 +46,7 @@ export class SettingsComponent implements OnInit, AfterViewInit {
 
   setSelectedCategory(category) {
     sessionStorage.setItem('category', JSON.stringify(category));
+    this.categorySelected = true;
+    this.categoryName = category.shortname;
   }
 }

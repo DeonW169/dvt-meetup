@@ -16,6 +16,16 @@
   </mat-form-field>
 </div>
 
+<div class="selected-category" *ngIf="!loading && categorySelected">
+  <span
+    >You have selected : <b>{{ categoryName }}</b></span
+  ><br />
+  <span>Proceed to groups...</span><br />
+  <ul fxLayout fxLayoutGap="10px" class="link">
+    <li><a routerLink="/groups">Groups</a></li>
+  </ul>
+</div>
+
 <mat-table [dataSource]="dataSource" matSort>
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>

@@ -14,3 +14,8 @@ body {
 .top-margin {
     margin-top: 15px;
 }
+
+.mat-row:hover {
+    background-color: #fafafa;
+    cursor: pointer;
+}
