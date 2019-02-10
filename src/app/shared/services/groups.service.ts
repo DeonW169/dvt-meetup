@@ -1,34 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class GroupsService {
-  private apiUrl = 'https://api.meetup.com/find/groups';
+  private apiUrl =
+    'https://api.meetup.com/find/groups?&sign=true&key=5c4392b6c4f7cc67271254ac6f23&location=Johannesburg&category=';
+  private cors_api_url = 'https://cors-anywhere.herokuapp.com/';
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
-  getGroups() {
-    debugger;
-    const authToken = sessionStorage.getItem('token');
-
-    return this.http
-      .get(this.apiUrl, {
-        headers: new Headers({
-          Authorization: 'Token ' + authToken
-        })
-      })
-      .toPromise()
-      .then(this.handleData)
-      .catch(this.handleError);
+  getGroups(categoryId) {
+    const _url = this.apiUrl + categoryId;
+    return this.runCorsGet({ url: _url });
   }
 
-  private handleData(res: any) {
-    const body = res.json();
-    return body || {};
-  }
-
-  private handleError(error: any): Promise<any> {
-    return Promise.reject(error.message || error);
+  private runCorsGet(options) {
+    return this.http.get(this.cors_api_url + options.url);
   }
 }

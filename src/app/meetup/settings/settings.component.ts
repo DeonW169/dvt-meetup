@@ -10,7 +10,9 @@ import { SettingsService } from '../../shared/services/settings.service';
 })
 export class SettingsComponent implements OnInit, AfterViewInit {
   categories: any;
-  displayedColumns = ['date', 'name', 'duration', 'calories', 'state'];
+  loading = true;
+  displayedColumns = ['id', 'name', 'shortname'];
+  dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -18,25 +20,29 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   constructor(private settingsService: SettingsService) {}
 
   ngOnInit() {
-    debugger;
-
-    const res = this.settingsService.getCategories();
-
-    // this.settingsService.getCategories().subscribe(res => {
-    //   console.log('res from service', res);
-    // });
-
-    // this.settingsService.getGroups().subscribe((categories: any) => {
-    //   this.categories = categories;
-    // });
+    this.loading = true;
+    this.settingsService.getCategories().subscribe(
+      res => {
+        this.loading = false;
+        this.categories = res;
+        this.dataSource.data = this.categories.results;
+      },
+      err => {
+        console.error(err);
+      }
+    );
   }
 
   ngAfterViewInit() {
-    // this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   doFilter(filterValue: string) {
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  setSelectedCategory(category) {
+    sessionStorage.setItem('category', JSON.stringify(category));
   }
 }

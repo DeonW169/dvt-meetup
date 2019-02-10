@@ -1,3 +1,48 @@
-<p class="text">
-  settings component works!
-</p>
+<div class="top-margin" *ngIf="loading" fxLayoutAlign="center center">
+  <mat-progress-spinner
+    mode="indeterminate"
+    color="primary"
+  ></mat-progress-spinner>
+</div>
+
+<div class="top-margin" fxLayoutAlign="center center" *ngIf="!loading">
+  <mat-form-field fxFlex="40%">
+    <input
+      matInput
+      type="text"
+      (keyup)="doFilter($event.target.value)"
+      placeholder="Filter"
+    />
+  </mat-form-field>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="shortname">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Short Name</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element">{{ element.shortname }}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="setSelectedCategory(row)"
+  ></mat-row>
+</mat-table>
+
+<mat-paginator
+  #paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]"
+></mat-paginator>
