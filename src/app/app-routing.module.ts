@@ -8,7 +8,8 @@ import { GroupsComponent } from './meetup/groups/groups.component';
 import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'welcome', component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'groups', component: GroupsComponent, canActivate: [AuthGuard] }

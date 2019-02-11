@@ -1,4 +1,15 @@
-<div class="top-margin" fxLayoutAlign="center center" *ngIf="!loading">
+<div
+  class="top-margin"
+  fxLayoutAlign="center center"
+  *ngIf="!loading && categoryNotSelected"
+>
+  Please select a Category for groups to load
+</div>
+<div
+  class="top-margin"
+  fxLayoutAlign="center center"
+  *ngIf="!loading && !categoryNotSelected"
+>
   <p class="selected-category">
     Showing all groups for Category: <b>{{ categoryName }}</b>
   </p>
@@ -10,7 +21,11 @@
   ></mat-progress-spinner>
 </div>
 
-<div class="top-margin" fxLayoutAlign="center center" *ngIf="!loading">
+<div
+  class="top-margin"
+  fxLayoutAlign="center center"
+  *ngIf="!loading && !categoryNotSelected"
+>
   <mat-form-field fxFlex="40%">
     <input
       matInput
@@ -32,9 +47,32 @@
     <mat-cell *matCellDef="let element">{{ element.status }}</mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="organizer">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Organizer</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element">{{ element.organizer.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="who">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Who</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.who }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="category">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Category</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element">{{ element.category.name }}</mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="link">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Link</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element.link }}</mat-cell>
+    <mat-cell *matCellDef="let element"
+      ><a href="{{ element.link }}" target="_blank"
+        >go to meetup group</a
+      ></mat-cell
+    >
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

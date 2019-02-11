@@ -13,7 +13,8 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   loading = true;
   categoryId: number;
   categoryName: string;
-  displayedColumns = ['name', 'status', 'link'];
+  categoryNotSelected = false;
+  displayedColumns = ['name', 'status', 'organizer', 'who', 'category', 'link'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -24,19 +25,24 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loading = true;
     const category = JSON.parse(sessionStorage.getItem('category'));
-    this.categoryId = category.id;
-    this.categoryName = category.shortname;
+    if (category) {
+      this.categoryId = category.id;
+      this.categoryName = category.shortname;
 
-    this.groupsService.getGroups(this.categoryId).subscribe(
-      res => {
-        this.loading = false;
-        this.groups = res;
-        this.dataSource.data = this.groups;
-      },
-      err => {
-        console.error(err);
-      }
-    );
+      this.groupsService.getGroups(this.categoryId).subscribe(
+        res => {
+          this.loading = false;
+          this.groups = res;
+          this.dataSource.data = this.groups;
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    } else {
+      this.loading = false;
+      this.categoryNotSelected = true;
+    }
   }
 
   ngAfterViewInit() {
